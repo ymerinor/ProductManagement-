@@ -1,17 +1,19 @@
 ﻿using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Domain.Product;
+using ProductManagement.Domain.Repository.Interface;
 
 namespace ProductManagement.Application.Product.Services
 {
     public class ProductService : IProductService
     {
-        public ProductService()
+        public readonly IProductRepository _productRepository;
+        public ProductService(IProductRepository productRepository)
         {
-
+            _productRepository = productRepository;
         }
-        public Task<IEnumerable<Products>> GetByIdAsync(int v)
+        public async Task<Products> GetByIdAsync(int v)
         {
-            throw new NotImplementedException();
+            return await _productRepository.GetByIdAsync(v);
         }
     }
 }

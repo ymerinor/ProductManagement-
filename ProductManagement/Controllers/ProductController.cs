@@ -19,11 +19,11 @@ namespace ProductManagement.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var product = await _prodcutService.GetByIdAsync(id);
-            if (product.Any())
+            if (product is null)
             {
-                return Ok(product);
+                return NotFound();
             }
-            return NotFound();
+            return Ok(product);
         }
 
         // POST api/<ProductController>

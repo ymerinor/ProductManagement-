@@ -1,8 +1,8 @@
 ﻿using ProductManagement.Domain.Product;
 
-namespace ProductManagement.Application.Product.Interfaces
+namespace ProductManagement.Domain.Repository.Interface
 {
-    public interface IProductService
+    public interface IProductRepository
     {
         Task<Products> GetByIdAsync(int v);
     }

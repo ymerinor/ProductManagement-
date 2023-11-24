@@ -4,6 +4,7 @@ using Moq;
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Controllers;
 using ProductManagement.Domain.Product;
+using ProductManagement.UnitTest.System.Fixtures;
 
 namespace ProductManagement.UnitTest.System.Controllers
 {
@@ -16,18 +17,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new List<Products>() {
-                    new() {
-                        ProductId = 1,
-                        Description = "Prodcut",
-                        Discount = 1,
-                        FinalPrice = 1,
-                        Name = "Name",
-                        Price = 1,
-                        StatusName = true,
-                        Stock = 1
-                    }
-                });
+                .ReturnsAsync(ProductFixtures.ProductTest);
             var controller = new ProductController(mockProductServices.Object);
             //Act
             var result = (OkObjectResult)await controller.Get(1);
@@ -42,7 +32,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new List<Products>());
+                .ReturnsAsync(ProductFixtures.ProductTest);
             var controller = new ProductController(mockProductServices.Object);
 
             //Act
@@ -60,18 +50,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new List<Products>() {
-                    new() {
-                        ProductId = 1,
-                        Description = "Prodcut",
-                        Discount = 1,
-                        FinalPrice = 1,
-                        Name = "Name",
-                        Price = 1,
-                        StatusName = true,
-                        Stock = 1
-                    }
-                });
+                .ReturnsAsync(ProductFixtures.ProductTest);
             var controller = new ProductController(mockProductServices.Object);
 
             //Act
@@ -79,7 +58,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Assert
             result.Should().BeOfType<OkObjectResult>();
             var objectResult = (OkObjectResult)result;
-            objectResult.Value.Should().BeOfType<List<Products>>();
+            objectResult.Value.Should().BeOfType<Products>();
         }
 
 
@@ -88,13 +67,10 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
-            mockProductServices
-                .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new List<Products>());
             var controller = new ProductController(mockProductServices.Object);
 
             //Act
-            var result = await controller.Get(1);
+            var result = await controller.Get(2);
             //Assert
             result.Should().BeOfType<NotFoundResult>();
             var objectResult = (NotFoundResult)result;

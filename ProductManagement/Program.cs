@@ -1,5 +1,7 @@
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Application.Product.Services;
+using ProductManagement.Domain.Repository.Interface;
+using ProductManagement.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,4 +32,5 @@ app.Run();
 void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IProductService, ProductService>();
+    services.AddTransient<IProductRepository, ProductRepository>();
 }
