@@ -6,13 +6,13 @@ namespace ProductManagement.Infrastructure
     /// <summary>
     /// Representa el contexto de la base de datos para la aplicación, proporcionando acceso a las funcionalidades de Entity Framework Core.
     /// </summary>
-    public class ProductProductManagementDbContext : DbContext
+    public class ProductManagementDbContext : DbContext
     {
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ApplicationDbContext"/>.
         /// </summary>
         /// <param name="options">Las opciones a ser utilizadas por el contexto.</param>
-        public ProductProductManagementDbContext(DbContextOptions<ProductProductManagementDbContext> options) : base(options)
+        public ProductManagementDbContext(DbContextOptions<ProductManagementDbContext> options) : base(options)
         {
         }
 

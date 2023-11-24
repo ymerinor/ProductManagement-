@@ -4,9 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>a4938106-38c7-4a1e-97fc-a99ec8ba5bf1</UserSecretsId>
+    <UserSecretsId>367aa805-281a-4fd6-8d0e-067cd5b7bfe5</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProductManagement.Application\ProductManagement.Application.csproj" />
-    <ProjectReference Include="..\ProductManagement.Infrastructure\ProductManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\ProductManagement.Application\ProductManagement.Application.csproj" />
+    <ProjectReference Include="..\..\ProductManagement.Infrastructure\ProductManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

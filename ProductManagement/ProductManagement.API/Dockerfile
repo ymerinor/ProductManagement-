@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ProductManagement.csproj", "."]
-RUN dotnet restore "./ProductManagement.csproj"
+COPY ["ProductManagement.API/ProductManagement.API.csproj", "ProductManagement.API/"]
+RUN dotnet restore "ProductManagement.API/ProductManagement.API.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "ProductManagement.csproj" -c Release -o /app/build
+WORKDIR "/src/ProductManagement.API"
+RUN dotnet build "ProductManagement.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ProductManagement.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ProductManagement.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ProductManagement.dll"]
+ENTRYPOINT ["dotnet", "ProductManagement.API.dll"]

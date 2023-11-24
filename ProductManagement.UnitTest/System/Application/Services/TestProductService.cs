@@ -8,7 +8,7 @@ namespace ProductManagement.UnitTest.System.Application.Services
     public class TestProductService
     {
         [Fact]
-        public async Task GetUserById_ExistsProdcut()
+        public async Task GetUserById_ExistsProduct()
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();

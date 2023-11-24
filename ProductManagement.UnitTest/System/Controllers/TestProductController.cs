@@ -1,8 +1,8 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using ProductManagement.API.Controllers;
 using ProductManagement.Application.Product.Interfaces;
-using ProductManagement.Controllers;
 using ProductManagement.Domain.Product;
 using ProductManagement.UnitTest.System.Fixtures;
 

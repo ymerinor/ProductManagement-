@@ -1,11 +1,11 @@
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Application.Product.Services;
-using ProductManagement.Domain.Repository.Interface;
-using ProductManagement.Infrastructure.Repository;
+using ProductManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddInfrastructure(builder.Configuration);
 ConfigureServices(builder.Services);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,5 +32,4 @@ app.Run();
 void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IProductService, ProductService>();
-    services.AddTransient<IProductRepository, ProductRepository>();
 }

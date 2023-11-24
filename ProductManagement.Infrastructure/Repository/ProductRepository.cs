@@ -5,10 +5,16 @@ namespace ProductManagement.Infrastructure.Repository
 {
     public class ProductRepository : IProductRepository
     {
+        private readonly ProductManagementDbContext _context;
 
-        public ProductRepository(ProductProductManagementDbContext productProductManagementDbContext)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public ProductRepository(ProductManagementDbContext context)
         {
-
+            _context = context;
         }
         public async Task<Products> GetByIdAsync(int v)
         {
