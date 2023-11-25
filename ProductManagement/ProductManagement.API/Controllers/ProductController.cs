@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
+using ProductManagement.Application.Product.Validations;
 
 namespace ProductManagement.API.Controllers
 {
@@ -28,8 +30,19 @@ namespace ProductManagement.API.Controllers
 
         // POST api/<ProductController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] ProductsRequestDto products)
         {
+            var validator = new ProductsRequestDtoValidator();
+            var validationResult = validator.Validate(products);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var productCreate = await _prodcutService.CreateAsync(products);
+
+            return Ok(productCreate);
         }
 
         // PUT api/<ProductController>/5

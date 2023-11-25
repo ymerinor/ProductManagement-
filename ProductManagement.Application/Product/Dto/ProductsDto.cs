@@ -1,9 +1,6 @@
-﻿namespace ProductManagement.Domain.Product
+﻿namespace ProductManagement.Application.Product.Dto
 {
-    /// <summary>
-    /// Clase que representa un producto.
-    /// </summary>
-    public class Products
+    public class ProductsDto
     {
         /// <summary>
         /// Obtiene o establece el identificador del producto.
@@ -23,27 +20,26 @@
         /// <summary>
         /// Obtiene o establece la cantidad en stock del producto.
         /// </summary>
-        public decimal Stock { get; set; } = 0;
+        public decimal Stock { get; set; }
 
         /// <summary>
         /// Obtiene o establece la descripción del producto.
         /// </summary>
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
 
         /// <summary>
         /// Obtiene o establece el precio del producto.
         /// </summary>
-        public decimal Price { get; set; } = 0;
+        public decimal Price { get; set; }
 
         /// <summary>
         /// Obtiene o establece el descuento aplicado al producto.
         /// </summary>
-        public decimal Discount { get; set; } = 0;
+        public decimal Discount { get; set; }
 
         /// <summary>
         /// Obtiene o establece el precio final del producto después de aplicar el descuento.
         /// </summary>
-        public decimal FinalPrice { get; set; } = 0;
+        public decimal FinalPrice { get; set; }
     }
-
 }

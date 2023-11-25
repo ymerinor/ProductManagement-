@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ProductManagement.API.Controllers;
+using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Domain.Product;
 using ProductManagement.UnitTest.System.Fixtures;
@@ -76,5 +77,57 @@ namespace ProductManagement.UnitTest.System.Controllers
             var objectResult = (NotFoundResult)result;
             objectResult.StatusCode.Should().Be(404);
         }
+
+        [Fact]
+        public async Task Post_Succes_StatusCode200()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            var controller = new ProductController(mockProductServices.Object);
+            //Act
+            var result = (OkObjectResult)await controller.Post(ProductFixtures.ProductRequestDtoTest);
+            //Assert
+            result.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task Post_Sucess_InvokeServiceOnce()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            var controller = new ProductController(mockProductServices.Object);
+
+            //Act
+            var result = await controller.Post(ProductFixtures.ProductRequestDtoTest);
+            //Assert
+            mockProductServices.Verify(
+                service => service.CreateAsync(It.IsAny<ProductsRequestDto>()), Times.Once());
+        }
+
+
+        [Fact]
+        public async Task Post_BadRequest_Return400()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            var controller = new ProductController(mockProductServices.Object);
+
+            //Act
+            var result = await controller.Post(ProductFixtures.ProductBadRequestDtoTest);
+            //Assert
+            result.Should().BeOfType<BadRequestResult>();
+            var objectResult = (BadRequestResult)result;
+            objectResult.StatusCode.Should().Be(400);
+        }
+
     }
 }

@@ -11,7 +11,7 @@ namespace ProductManagement.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ProductManagementDbContext>(options =>
-                    options.UseSqlServer(configuration.GetConnectionString("UserManagementConnection")));
+                    options.UseSqlServer(configuration.GetConnectionString("ProductManagementConnection")));
 
             services.AddTransient<IProductRepository, ProductRepository>();
             return services;

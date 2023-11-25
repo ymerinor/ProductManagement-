@@ -1,5 +1,8 @@
+using FluentValidation;
+using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Application.Product.Services;
+using ProductManagement.Application.Product.Validations;
 using ProductManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,4 +35,5 @@ app.Run();
 void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IProductService, ProductService>();
+    builder.Services.AddScoped<IValidator<ProductsRequestDto>, ProductsRequestDtoValidator>();
 }

@@ -3,6 +3,7 @@ using ProductManagement.Domain.Repository.Interface;
 
 namespace ProductManagement.Infrastructure.Repository
 {
+    /// <inheritdoc/>
     public class ProductRepository : IProductRepository
     {
         private readonly ProductManagementDbContext _context;
@@ -16,9 +17,11 @@ namespace ProductManagement.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<Products> GetByIdAsync(int v)
+
+        /// <inheritdoc/>
+        public async Task<Products> GetByIdAsync(int productId)
         {
-            return new Products();
+            return _context.Products.FirstOrDefault(t => t.ProductId == productId);
         }
     }
 }
