@@ -32,6 +32,18 @@ namespace ProductManagement.Infrastructure.Repository
         {
             return await _context.Products.FirstOrDefaultAsync(t => t.ProductId == productId);
         }
+        /// <inheritdoc/>
+        public async Task<bool> RemoveAsync(int productId)
+        {
+            var productRemove = await _context.Products.Where(t => t.ProductId == productId).FirstOrDefaultAsync();
+            if (productRemove != null)
+            {
+                _context.Products.Remove(productRemove);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
 
         /// <inheritdoc/>
         public async Task<Products> UpdateAsync(int productId, Products productCreateTest)

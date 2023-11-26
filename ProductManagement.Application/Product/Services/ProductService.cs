@@ -32,25 +32,36 @@ namespace ProductManagement.Application.Product.Services
         /// <inheritdoc/>
         public async Task<ProductsDto> GetByIdAsync(int productId)
         {
-            var productInfomation = await _productRepository.GetByIdAsync(productId);
-            if (productInfomation is null)
-            {
-                throw new NotFoundException("No existe informacion relacionados con el producto");
-            }
+            var productInfomation = await ProductExists(productId);
             return (ProductsDto)productInfomation;
         }
         /// <inheritdoc/>
         public async Task<Products> UpdateAsync(int productId, ProductsRequestDto productsRequestDto)
         {
+            await ProductExists(productId);
             var discount = 0M;
             var productUpdate = (Products)productsRequestDto;
             productUpdate.Discount = productsRequestDto.Price * (discount - 100) / 100;
             return await _productRepository.UpdateAsync(productId, productUpdate);
         }
         /// <inheritdoc/>
-        public Task<bool> RemoveAsync(int productId)
+        public async Task<bool> RemoveAsync(int productId)
         {
-            throw new NotImplementedException();
+            await ProductExists(productId);
+            return await _productRepository.RemoveAsync(productId);
+        }
+
+        protected async Task<Products> ProductExists(int productId)
+        {
+            var productInfomation = await _productRepository.GetByIdAsync(productId);
+            if (productInfomation is null)
+            {
+                throw new NotFoundException("No existe informacion relacionados con el producto");
+            }
+            else
+            {
+                return productInfomation;
+            }
         }
     }
 }

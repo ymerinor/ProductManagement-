@@ -49,6 +49,7 @@ namespace ProductManagement.UnitTest.System.Fixtures
 
         public static Products ProductUpdateTest => new()
         {
+            ProductId = 1,
             Description = "Prodcut",
             Discount = 1,
             FinalPrice = 1,

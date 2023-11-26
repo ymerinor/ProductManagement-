@@ -65,6 +65,9 @@ namespace ProductManagement.UnitTest.System.Application.Services
             mockRepository
                 .Setup(repository => repository.UpdateAsync(It.IsAny<int>(), It.IsAny<Products>()))
                 .ReturnsAsync(ProductFixtures.ProductUpdateTest);
+            mockRepository
+                .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(ProductFixtures.ProductUpdateTest);
             var serviceProduct = new ProductService(mockRepository.Object);
             //Act
             var result = await serviceProduct.UpdateAsync(1, ProductFixtures.ProductBadRequestDtoTest);
@@ -79,19 +82,18 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             mockRepository
-                .Setup(repository => repository.UpdateAsync(It.IsAny<int>(), It.IsAny<Products>()))
-                .ReturnsAsync(ProductFixtures.ProductUpdateTest);
+             .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()));
             var serviceProduct = new ProductService(mockRepository.Object);
             //Act
             try
             {
-                await serviceProduct.UpdateAsync(3, ProductFixtures.ProductBadRequestDtoTest);
+                await serviceProduct.UpdateAsync(2, ProductFixtures.ProductBadRequestDtoTest);
             }
             catch (Exception ex)
             {
                 //Assert
                 Assert.NotNull(ex);
-                Assert.Equal("ccc", ex.Message);
+                Assert.Equal("No existe informacion relacionados con el producto", ex.Message);
             }
         }
     }
