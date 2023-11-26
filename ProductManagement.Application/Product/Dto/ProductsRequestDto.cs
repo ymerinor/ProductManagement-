@@ -1,4 +1,6 @@
-﻿namespace ProductManagement.Application.Product.Dto
+﻿using ProductManagement.Domain.Product;
+
+namespace ProductManagement.Application.Product.Dto
 {
     public class ProductsRequestDto
     {
@@ -25,7 +27,29 @@
         /// <summary>
         /// Obtiene o establece el precio del producto.
         /// </summary>
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
+        /// <summary>
+        /// Obtiene o establece el descuento aplicado al producto.
+        /// </summary>
+        public decimal Discount { get; set; } = 0;
+
+        // <summary>
+        /// Convierte de manera explícita un objeto ProductsRequestDto a un objeto Products.
+        /// </summary>
+        /// <param name="requestDto">Objeto ProductsRequestDto a convertir.</param>
+        /// <returns>Un objeto Products creado a partir de la información en ProductsRequestDto.</returns>
+        public static explicit operator Products(ProductsRequestDto requestDto)
+        {
+            return new Products
+            {
+                Name = requestDto.Name,
+                StatusName = requestDto.StatusName,
+                Stock = requestDto.Stock,
+                Description = requestDto.Description,
+                Price = requestDto.Price,
+                Discount = 0,
+            };
+        }
     }
 
 }

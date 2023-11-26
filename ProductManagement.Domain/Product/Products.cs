@@ -44,6 +44,8 @@
         /// Obtiene o establece el precio final del producto después de aplicar el descuento.
         /// </summary>
         public decimal FinalPrice { get; set; } = 0;
+        public DateTime DateRegistration { get; set; } = DateTime.Now;
+        public DateTime DateUpdate { get; set; } = DateTime.Now;
     }
 
 }

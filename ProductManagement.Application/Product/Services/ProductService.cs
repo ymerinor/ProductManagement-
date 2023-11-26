@@ -22,9 +22,12 @@ namespace ProductManagement.Application.Product.Services
             _productRepository = productRepository;
         }
 
-        public Task<Products> CreateAsync(ProductsRequestDto productsDto)
+        public async Task<Products> CreateAsync(ProductsRequestDto productsRequestDto)
         {
-            throw new NotImplementedException();
+            var discount = 0M;
+            var product = (Products)productsRequestDto;
+            product.Discount = productsRequestDto.Price * (discount - 100) / 100;
+            return await _productRepository.CreateAsync(product);
         }
 
         /// <inheritdoc/>

@@ -28,7 +28,23 @@ namespace ProductManagement.UnitTest.System.Fixtures
             Name = "Name",
             Price = 1,
             StatusName = true,
-            Stock = 1
+            Stock = 1,
+            DateRegistration = DateTime.Now,
+            DateUpdate = DateTime.Now.AddDays(1),
+
+        };
+
+        public static Products ProductCreateTest => new()
+        {
+            Description = "Prodcut",
+            Discount = 1,
+            FinalPrice = 1,
+            Name = "Name",
+            Price = 1,
+            StatusName = true,
+            Stock = 1,
+            DateRegistration = DateTime.Now,
+            DateUpdate = DateTime.Now.AddDays(1),
 
         };
 

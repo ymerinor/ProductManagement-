@@ -1,4 +1,5 @@
-﻿using ProductManagement.Domain.Product;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductManagement.Domain.Product;
 using ProductManagement.Domain.Repository.Interface;
 
 namespace ProductManagement.Infrastructure.Repository
@@ -17,11 +18,18 @@ namespace ProductManagement.Infrastructure.Repository
         {
             _context = context;
         }
+        /// <inheritdoc/>
+        public async Task<Products> CreateAsync(Products products)
+        {
+            _context.Products.Add(products);
+            await _context.SaveChangesAsync();
+            return products;
+        }
 
         /// <inheritdoc/>
         public async Task<Products> GetByIdAsync(int productId)
         {
-            return _context.Products.FirstOrDefault(t => t.ProductId == productId);
+            return await _context.Products.FirstOrDefaultAsync(t => t.ProductId == productId);
         }
     }
 }

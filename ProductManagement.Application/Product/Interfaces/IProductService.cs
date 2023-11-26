@@ -8,7 +8,12 @@ namespace ProductManagement.Application.Product.Interfaces
     /// </summary>
     public interface IProductService
     {
-        Task<Products> CreateAsync(ProductsRequestDto productsDto);
+        /// <summary>
+        /// Crea un nuevo producto de manera asincrónica basado en la información proporcionada en el objeto ProductsRequestDto.
+        /// </summary>
+        /// <param name="productsRequestDto">Objeto que contiene la información del nuevo producto.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado de la tarea es el producto recién creado.</returns>
+        Task<Products> CreateAsync(ProductsRequestDto productsRequestDto);
 
         /// <summary>
         /// Obtiene un objeto Products por su identificador de manera asincrónica.

@@ -43,6 +43,22 @@ namespace ProductManagement.UnitTest.System.Infrastructure.Repository
             }
         }
 
+        [Fact]
+        public async Task CreteProductAsync_Sucess()
+        {
+            using (var context = new ProductManagementDbContext(_fixture.CreateOptions<ProductManagementDbContext>()))
+            {
+                // Arrange
+                var repository = new ProductRepository(context);
+                // Act
+                var result = await repository.CreateAsync(ProductFixtures.ProductCreateTest);
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.Equal(ProductFixtures.ProductCreateTest.Name, result.Name);
+            }
+        }
+
         public void Dispose()
         {
             _fixture.Dispose();
