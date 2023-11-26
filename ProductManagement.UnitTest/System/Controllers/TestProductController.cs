@@ -148,5 +148,21 @@ namespace ProductManagement.UnitTest.System.Controllers
             objectResult.StatusCode.Should().Be(200);
         }
 
+
+        [Fact]
+        public async Task Put_Succes_StatusCode200()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.UpdateAsync(It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            var controller = new ProductController(mockProductServices.Object);
+            //Act
+            var result = (OkObjectResult)await controller.Put(1, ProductFixtures.ProductRequestDtoTest);
+            //Assert
+            result.StatusCode.Should().Be(200);
+        }
+
     }
 }

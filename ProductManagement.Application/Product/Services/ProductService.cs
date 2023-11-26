@@ -35,5 +35,10 @@ namespace ProductManagement.Application.Product.Services
         {
             return await _productRepository.GetByIdAsync(v);
         }
+
+        public Task<Products> UpdateAsync(ProductsRequestDto productsRequestDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -47,8 +47,9 @@ namespace ProductManagement.API.Controllers
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] ProductsRequestDto products)
         {
+            return Ok("");
         }
 
         // DELETE api/<ProductController>/5

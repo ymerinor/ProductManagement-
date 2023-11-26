@@ -21,5 +21,6 @@ namespace ProductManagement.Application.Product.Interfaces
         /// <param name="productId">Identificador del producto.</param>
         /// <returns>Un objeto Products que corresponde al identificador proporcionado.</returns>
         Task<Products> GetByIdAsync(int productId);
+        Task<Products> UpdateAsync(ProductsRequestDto productsRequestDto);
     }
 }
