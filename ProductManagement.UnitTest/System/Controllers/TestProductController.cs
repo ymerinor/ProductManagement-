@@ -129,5 +129,24 @@ namespace ProductManagement.UnitTest.System.Controllers
             objectResult.StatusCode.Should().Be(400);
         }
 
+
+        [Fact]
+        public async Task Post_RequestOK_Return200()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            var controller = new ProductController(mockProductServices.Object);
+
+            //Act
+            var result = await controller.Post(ProductFixtures.ProductRequestDtoTest);
+            //Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var objectResult = (OkObjectResult)result;
+            objectResult.StatusCode.Should().Be(200);
+        }
+
     }
 }
