@@ -1,4 +1,6 @@
-﻿namespace ProductManagement.Application.Product.Dto
+﻿using ProductManagement.Domain.Product;
+
+namespace ProductManagement.Application.Product.Dto
 {
     public class ProductsDto
     {
@@ -41,5 +43,25 @@
         /// Obtiene o establece el precio final del producto después de aplicar el descuento.
         /// </summary>
         public decimal FinalPrice { get; set; }
+
+        public DateTime DateRegistration { get; set; }
+        public DateTime DateUpdate { get; set; }
+
+        public static explicit operator ProductsDto(Products products)
+        {
+            return new ProductsDto
+            {
+                Name = products.Name,
+                StatusName = products.StatusName,
+                Stock = products.Stock,
+                Description = products.Description,
+                Price = products.Price,
+                Discount = products.Discount,
+                FinalPrice = products.FinalPrice,
+                ProductId = products.ProductId,
+                DateRegistration = products.DateRegistration,
+                DateUpdate = products.DateUpdate
+            };
+        }
     }
 }

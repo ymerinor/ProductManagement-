@@ -5,20 +5,6 @@ namespace ProductManagement.UnitTest.System.Fixtures
 {
     public static class ProductFixtures
     {
-        public static List<Products> GetProductTest => new()
-        {
-            new() {
-                ProductId = 1,
-                Description = "Prodcut",
-                Discount = 1,
-                FinalPrice = 1,
-                Name = "Name",
-                Price = 1,
-                StatusName = true,
-                Stock = 1
-            }
-        };
-
         public static Products ProductTest => new()
         {
             ProductId = 1,
@@ -33,7 +19,6 @@ namespace ProductManagement.UnitTest.System.Fixtures
             DateUpdate = DateTime.Now.AddDays(1),
 
         };
-
         public static Products ProductCreateTest => new()
         {
             Description = "Prodcut",
@@ -47,8 +32,6 @@ namespace ProductManagement.UnitTest.System.Fixtures
             DateUpdate = DateTime.Now.AddDays(1),
 
         };
-
-
         public static ProductsRequestDto ProductRequestDtoTest => new()
         {
             Description = "Prodcut",
@@ -57,7 +40,6 @@ namespace ProductManagement.UnitTest.System.Fixtures
             StatusName = true,
             Stock = 1
         };
-
         public static ProductsRequestDto ProductBadRequestDtoTest => new()
         {
             Description = "Prodcut",
@@ -65,16 +47,30 @@ namespace ProductManagement.UnitTest.System.Fixtures
             Stock = 1
         };
 
-        public static ProductsDto ProductDtoTest => new()
+        public static Products ProductUpdateTest => new()
         {
-            ProductId = 1,
             Description = "Prodcut",
             Discount = 1,
             FinalPrice = 1,
             Name = "Name",
             Price = 1,
             StatusName = true,
-            Stock = 1
+            Stock = 1,
+            DateRegistration = DateTime.Now,
+            DateUpdate = DateTime.Now.AddDays(1),
+
+        };
+        public static ProductsDto ProductDtoTest => new()
+        {
+            Description = "Prodcut",
+            Discount = 1,
+            FinalPrice = 1,
+            Name = "Name",
+            Price = 1,
+            StatusName = true,
+            Stock = 1,
+            DateRegistration = DateTime.Now,
+            DateUpdate = DateTime.Now.AddDays(1),
 
         };
     }

@@ -59,6 +59,41 @@ namespace ProductManagement.UnitTest.System.Infrastructure.Repository
             }
         }
 
+        [Fact]
+        public async Task Update_ProductAsync_Sucess()
+        {
+            using (var context = new ProductManagementDbContext(_fixture.CreateOptions<ProductManagementDbContext>()))
+            {
+                // Arrange
+                var repository = new ProductRepository(context);
+                // Act
+                var result = await repository.UpdateAsync(1, ProductFixtures.ProductCreateTest);
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.Equal(ProductFixtures.ProductCreateTest.Name, result.Name);
+            }
+        }
+
+        [Fact]
+        public async Task Update_NoProductAsync()
+        {
+            using (var context = new ProductManagementDbContext(_fixture.CreateOptions<ProductManagementDbContext>()))
+            {
+                // Arrange
+                var repository = new ProductRepository(context);
+                // Act
+                try
+                {
+                    await repository.UpdateAsync(2, ProductFixtures.ProductCreateTest);
+                }
+                catch (Exception ex)
+                {
+                    // Assert
+                    Assert.Equal("No existe informacion relacionada con el producto", ex.Message);
+                }
+            }
+        }
         public void Dispose()
         {
             _fixture.Dispose();

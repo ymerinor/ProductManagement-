@@ -20,5 +20,14 @@ namespace ProductManagement.Domain.Repository.Interface
         /// <param name="productId">Identificador del producto.</param>
         /// <returns>Un objeto Products que corresponde al identificador proporcionado.</returns>
         Task<Products> GetByIdAsync(int productId);
+
+        /// <summary>
+        /// actualiza un producto por su identificador de manera asincrónica.
+        /// </summary>
+        /// <param name="productId">Identificador del producto.</param>
+        /// <param name="Products">Objeto  a actualizar.</param>
+        /// <returns>Un objeto Products que corresponde al identificador proporcionado.</returns>
+
+        Task<Products> UpdateAsync(int productId, Products productCreateTest);
     }
 }

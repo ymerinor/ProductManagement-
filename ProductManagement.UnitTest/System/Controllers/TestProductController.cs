@@ -4,7 +4,6 @@ using Moq;
 using ProductManagement.API.Controllers;
 using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
-using ProductManagement.Domain.Product;
 using ProductManagement.UnitTest.System.Fixtures;
 
 namespace ProductManagement.UnitTest.System.Controllers
@@ -18,7 +17,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(ProductFixtures.ProductTest);
+                .ReturnsAsync(ProductFixtures.ProductDtoTest);
             var controller = new ProductController(mockProductServices.Object);
             //Act
             var result = (OkObjectResult)await controller.Get(1);
@@ -33,7 +32,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(ProductFixtures.ProductTest);
+                .ReturnsAsync(ProductFixtures.ProductDtoTest);
             var controller = new ProductController(mockProductServices.Object);
 
             //Act
@@ -51,7 +50,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(ProductFixtures.ProductTest);
+                .ReturnsAsync(ProductFixtures.ProductDtoTest);
             var controller = new ProductController(mockProductServices.Object);
 
             //Act
@@ -59,7 +58,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Assert
             result.Should().BeOfType<OkObjectResult>();
             var objectResult = (OkObjectResult)result;
-            objectResult.Value.Should().BeOfType<Products>();
+            objectResult.Value.Should().BeOfType<ProductsDto>();
         }
 
 
@@ -129,7 +128,6 @@ namespace ProductManagement.UnitTest.System.Controllers
             objectResult.StatusCode.Should().Be(400);
         }
 
-
         [Fact]
         public async Task Post_RequestOK_Return200()
         {
@@ -147,7 +145,6 @@ namespace ProductManagement.UnitTest.System.Controllers
             var objectResult = (OkObjectResult)result;
             objectResult.StatusCode.Should().Be(200);
         }
-
 
         [Fact]
         public async Task Put_Succes_StatusCode200()
@@ -181,5 +178,34 @@ namespace ProductManagement.UnitTest.System.Controllers
                 service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()), Times.Once());
         }
 
+        [Fact]
+        public async Task Delete_Succes_StatusCode200()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.RemoveAsync(It.IsAny<int>())).ReturnsAsync(true);
+            var controller = new ProductController(mockProductServices.Object);
+            //Act
+            var result = (OkObjectResult)await controller.Delete(1);
+            //Assert
+            result.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task Delete_Sucess_InvokeServiceOnce()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.RemoveAsync(It.IsAny<int>()));
+            var controller = new ProductController(mockProductServices.Object);
+
+            //Act
+            var result = await controller.Delete(1);
+            //Assert
+            mockProductServices.Verify(
+                service => service.RemoveAsync(It.IsAny<int>()), Times.Once());
+        }
     }
 }
