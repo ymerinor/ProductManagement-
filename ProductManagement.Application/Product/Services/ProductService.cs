@@ -24,9 +24,9 @@ namespace ProductManagement.Application.Product.Services
         }
         public async Task<Products> CreateAsync(ProductsRequestDto productsRequestDto)
         {
-            var discount = 0M;
+            var discount = 5;
             var product = (Products)productsRequestDto;
-            product.Discount = productsRequestDto.Price * (discount - 100) / 100;
+            product.Price = productsRequestDto.Price * (discount - 100) / 100;
             return await _productRepository.CreateAsync(product);
         }
         /// <inheritdoc/>

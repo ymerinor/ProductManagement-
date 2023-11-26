@@ -96,5 +96,44 @@ namespace ProductManagement.UnitTest.System.Application.Services
                 Assert.Equal("No existe informacion relacionados con el producto", ex.Message);
             }
         }
+
+        [Fact]
+        public async Task RemoveProduct_Sucess()
+        {
+            //Arrage
+            var mockRepository = new Mock<IProductRepository>();
+            mockRepository
+                .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            mockRepository
+                .Setup(repository => repository.RemoveAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+            var serviceProduct = new ProductService(mockRepository.Object);
+            //Act
+            var result = await serviceProduct.RemoveAsync(1);
+            //Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task RemoveProduct_NoFound()
+        {
+            //Arrage
+            var mockRepository = new Mock<IProductRepository>();
+            mockRepository
+                .Setup(repository => repository.RemoveAsync(It.IsAny<int>()))
+                .ReturnsAsync(false);
+            var serviceProduct = new ProductService(mockRepository.Object);
+            try
+            {
+                await serviceProduct.RemoveAsync(1);
+            }
+            catch (Exception ex)
+            {
+                //Assert
+                Assert.NotNull(ex);
+                Assert.Equal("No existe informacion relacionados con el producto", ex.Message);
+            }
+        }
     }
 }

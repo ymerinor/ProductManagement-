@@ -28,10 +28,6 @@ namespace ProductManagement.Application.Product.Dto
         /// Obtiene o establece el precio del producto.
         /// </summary>
         public decimal Price { get; set; }
-        /// <summary>
-        /// Obtiene o establece el descuento aplicado al producto.
-        /// </summary>
-        public decimal Discount { get; set; } = 0;
 
         // <summary>
         /// Convierte de manera explícita un objeto ProductsRequestDto a un objeto Products.
