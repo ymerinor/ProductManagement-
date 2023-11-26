@@ -41,7 +41,6 @@ namespace ProductManagement.API.Controllers
             }
 
             var productCreate = await _prodcutService.CreateAsync(products);
-
             return Ok(productCreate);
         }
 
@@ -49,7 +48,8 @@ namespace ProductManagement.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductsRequestDto products)
         {
-            return Ok("");
+            var productUpdate = await _prodcutService.UpdateAsync(id, products);
+            return Ok(productUpdate);
         }
 
         // DELETE api/<ProductController>/5

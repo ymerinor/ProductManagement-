@@ -155,13 +155,30 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Arrage
             var mockProductServices = new Mock<IProductService>();
             mockProductServices
-                .Setup(service => service.UpdateAsync(It.IsAny<ProductsRequestDto>()))
+                .Setup(service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
             var controller = new ProductController(mockProductServices.Object);
             //Act
             var result = (OkObjectResult)await controller.Put(1, ProductFixtures.ProductRequestDtoTest);
             //Assert
             result.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task Put_Sucess_InvokeServiceOnce()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            mockProductServices
+                .Setup(service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            var controller = new ProductController(mockProductServices.Object);
+
+            //Act
+            var result = await controller.Put(1, ProductFixtures.ProductRequestDtoTest);
+            //Assert
+            mockProductServices.Verify(
+                service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()), Times.Once());
         }
 
     }
