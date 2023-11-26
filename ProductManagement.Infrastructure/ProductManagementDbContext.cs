@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductManagement.Domain.Product;
+using ProductManagement.Infrastructure.Configurations;
+using System.Reflection;
 
 namespace ProductManagement.Infrastructure
 {
@@ -28,6 +30,9 @@ namespace ProductManagement.Infrastructure
         /// <param name="modelBuilder">El constructor que se está utilizando para construir el modelo para este contexto.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.ApplyConfiguration(new ProductsConfiguration());
             base.OnModelCreating(modelBuilder);
 
         }
