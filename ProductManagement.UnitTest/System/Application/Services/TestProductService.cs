@@ -42,7 +42,7 @@ namespace ProductManagement.UnitTest.System.Application.Services
             .Returns(ProductFixtures.StatusValues);
             var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             // Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.GetByIdAsync(2));
+            await Assert.ThrowsAsync<NoContentException>(async () => await serviceProduct.GetByIdAsync(2));
 
         }
 
@@ -108,7 +108,7 @@ namespace ProductManagement.UnitTest.System.Application.Services
            .Returns(ProductFixtures.StatusValues);
             var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             // Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.UpdateAsync(2, ProductFixtures.ProductBadRequestDtoTest));
+            await Assert.ThrowsAsync<NoContentException>(async () => await serviceProduct.UpdateAsync(2, ProductFixtures.ProductBadRequestDtoTest));
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace ProductManagement.UnitTest.System.Application.Services
                 .Returns(ProductFixtures.StatusValues);
             var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             // Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.RemoveAsync(1));
+            await Assert.ThrowsAsync<NoContentException>(async () => await serviceProduct.RemoveAsync(1));
         }
     }
 }

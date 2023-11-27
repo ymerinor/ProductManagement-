@@ -13,6 +13,11 @@ namespace ProductManagement.API.Controllers
         private readonly IProductService _prodcutService;
         private readonly IProductStatusCache _productStatusCache;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="prodcutService"></param>
+        /// <param name="productStatusCache"></param>
         public ProductController(IProductService prodcutService, IProductStatusCache productStatusCache)
         {
             _prodcutService = prodcutService;
@@ -41,17 +46,17 @@ namespace ProductManagement.API.Controllers
         /// <param name="product">Datos del nuevo producto.</param>
         /// <returns>El producto recién creado.</returns>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ProductsRequestDto products)
+        public async Task<ActionResult> Post([FromBody] ProductsRequestDto product)
         {
             var validator = new ProductsRequestDtoValidator(_productStatusCache);
-            var validationResult = validator.Validate(products);
+            var validationResult = validator.Validate(product);
 
             if (!validationResult.IsValid)
             {
-                return BadRequest();
+                return BadRequest(validationResult.Errors);
             }
 
-            var productCreate = await _prodcutService.CreateAsync(products);
+            var productCreate = await _prodcutService.CreateAsync(product);
             return Ok(productCreate);
         }
 
@@ -62,9 +67,16 @@ namespace ProductManagement.API.Controllers
         /// <param name="product">Nuevos datos del producto.</param>
         /// <returns>El producto actualizado.</returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ProductsRequestDto products)
+        public async Task<ActionResult> Put(int id, [FromBody] ProductsRequestDto product)
         {
-            var productUpdate = await _prodcutService.UpdateAsync(id, products);
+            var validator = new ProductsRequestDtoValidator(_productStatusCache);
+            var validationResult = validator.Validate(product);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+            var productUpdate = await _prodcutService.UpdateAsync(id, product);
             return Ok(productUpdate);
         }
 

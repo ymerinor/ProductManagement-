@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Product Management demo.",
-        Description = "Demo API - para el productos  de la compañia Tekton ",
+        Description = "Demo API - para el manejo de productos de la compañia Tekton ",
         Contact = new OpenApiContact
         {
             Name = "Yeiner  Merino",
@@ -56,7 +56,7 @@ app.UseStaticFiles();
 //Add support to logging request with SERILOG
 app.UseSerilogRequestLogging();
 app.UseResponseTimeLogging();
-
+app.UseExceptionMiddleware();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

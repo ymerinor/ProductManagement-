@@ -51,7 +51,7 @@ namespace ProductManagement.Infrastructure.Repository
             var itemProduct = await _context.Products.Where(t => t.ProductId == productId).FirstOrDefaultAsync();
             if (itemProduct is null)
             {
-                throw new NotFoundException("No existe informacion relacionada con el producto");
+                throw new NoContentException("No existe informacion relacionada con el producto");
             }
             else
             {

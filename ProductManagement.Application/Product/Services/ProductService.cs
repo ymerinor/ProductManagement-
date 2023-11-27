@@ -78,13 +78,13 @@ namespace ProductManagement.Application.Product.Services
         /// </summary>
         /// <param name="productId">id de producto a consultar</param>
         /// <returns></returns>
-        /// <exception cref="NotFoundException">se lanza exepcion en caso de no existir registro creado</exception>
+        /// <exception cref="NoContentException">se lanza exepcion en caso de no existir registro creado</exception>
         protected async Task<Products> ProductExists(int productId)
         {
             var productInfomation = await _productRepository.GetByIdAsync(productId);
             if (productInfomation is null)
             {
-                throw new NotFoundException("No existe informacion relacionados con el producto");
+                throw new NoContentException("No existe informacion relacionados con el producto");
             }
             else
             {

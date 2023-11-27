@@ -72,7 +72,7 @@ namespace ProductManagement.UnitTest.System.Infrastructure.Repository
             // Arrange
             var repository = new ProductRepository(context);
             // Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(async () => await repository.UpdateAsync(2, ProductFixtures.ProductCreateTest));
+            await Assert.ThrowsAsync<NoContentException>(async () => await repository.UpdateAsync(2, ProductFixtures.ProductCreateTest));
         }
 
         [Fact]

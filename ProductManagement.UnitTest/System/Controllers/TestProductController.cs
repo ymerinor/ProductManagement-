@@ -137,8 +137,8 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Act
             var result = await controller.Post(ProductFixtures.ProductBadRequestDtoTest);
             //Assert
-            result.Should().BeOfType<BadRequestResult>();
-            var objectResult = (BadRequestResult)result;
+            result.Should().BeOfType<BadRequestObjectResult>();
+            var objectResult = (BadRequestObjectResult)result;
             objectResult.StatusCode.Should().Be(400);
         }
 
@@ -172,6 +172,8 @@ namespace ProductManagement.UnitTest.System.Controllers
             mockProductServices
                 .Setup(service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+                .Returns(ProductFixtures.StatusValues);
             var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
             //Act
             var result = (OkObjectResult)await controller.Put(1, ProductFixtures.ProductRequestDtoTest);
@@ -188,6 +190,8 @@ namespace ProductManagement.UnitTest.System.Controllers
             mockProductServices
                 .Setup(service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+                .Returns(ProductFixtures.StatusValues);
             var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
@@ -195,6 +199,27 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Assert
             mockProductServices.Verify(
                 service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task Put_BadRequest_Return400()
+        {
+            //Arrage
+            var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockProductServices
+                .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+                .Returns(ProductFixtures.StatusValues);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
+
+            //Act
+            var result = await controller.Put(1, ProductFixtures.ProductBadRequestDtoTest);
+            //Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+            var objectResult = (BadRequestObjectResult)result;
+            objectResult.StatusCode.Should().Be(400);
         }
 
         [Fact]
