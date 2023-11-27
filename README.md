@@ -25,7 +25,7 @@ Para validar los logs generados por la aplicación, puedes acceder a la ruta den
 
 ```plaintext
 /app/Logs/
-
+```
 ### Ejecutar Pruebas
 El proyecto está diseñado con TDD. Puedes ejecutar las pruebas utilizando tu entorno de desarrollo preferido.
 
