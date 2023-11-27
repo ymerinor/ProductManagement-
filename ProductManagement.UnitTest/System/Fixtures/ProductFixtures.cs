@@ -13,7 +13,7 @@ namespace ProductManagement.UnitTest.System.Fixtures
             FinalPrice = 1,
             Name = "Name",
             Price = 1,
-            StatusName = true,
+            StatusName = "Activo",
             Stock = 1,
             DateRegistration = DateTime.Now,
             DateUpdate = DateTime.Now.AddDays(1),
@@ -26,7 +26,7 @@ namespace ProductManagement.UnitTest.System.Fixtures
             FinalPrice = 1,
             Name = "Name",
             Price = 1,
-            StatusName = true,
+            StatusName = "Activo",
             Stock = 1,
             DateRegistration = DateTime.Now,
             DateUpdate = DateTime.Now.AddDays(1),
@@ -37,13 +37,13 @@ namespace ProductManagement.UnitTest.System.Fixtures
             Description = "Prodcut",
             Name = "Name",
             Price = 1,
-            StatusName = true,
+            Status = 1,
             Stock = 1
         };
         public static ProductsRequestDto ProductBadRequestDtoTest => new()
         {
             Description = "Prodcut",
-            StatusName = true,
+            Status = 1,
             Stock = 1
         };
 
@@ -55,7 +55,7 @@ namespace ProductManagement.UnitTest.System.Fixtures
             FinalPrice = 1,
             Name = "Name",
             Price = 1,
-            StatusName = true,
+            StatusName = "Activo",
             Stock = 1,
             DateRegistration = DateTime.Now,
             DateUpdate = DateTime.Now.AddDays(1),
@@ -68,10 +68,17 @@ namespace ProductManagement.UnitTest.System.Fixtures
             FinalPrice = 1,
             Name = "Name",
             Price = 1,
-            StatusName = true,
+            StatusName = "Activo",
             Stock = 1,
             DateRegistration = DateTime.Now,
             DateUpdate = DateTime.Now.AddDays(1),
+
+        };
+
+        public static Dictionary<int, string> StatusValues = new()
+        {
+            { 1, "Active" },
+            { 0, "Inactive" }
 
         };
     }

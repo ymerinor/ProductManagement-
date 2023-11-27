@@ -4,6 +4,7 @@ using Moq;
 using ProductManagement.API.Controllers;
 using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
+using ProductManagement.Domain.Core;
 using ProductManagement.UnitTest.System.Fixtures;
 
 namespace ProductManagement.UnitTest.System.Controllers
@@ -15,10 +16,11 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductDtoTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
             //Act
             var result = (OkObjectResult)await controller.Get(1);
             //Assert
@@ -30,10 +32,11 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductDtoTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Get(1);
@@ -48,10 +51,11 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductDtoTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Get(1);
@@ -67,7 +71,8 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
-            var controller = new ProductController(mockProductServices.Object);
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Get(2);
@@ -82,10 +87,13 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+             .Returns(ProductFixtures.StatusValues);
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
             //Act
             var result = (OkObjectResult)await controller.Post(ProductFixtures.ProductRequestDtoTest);
             //Assert
@@ -97,13 +105,16 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+            .Returns(ProductFixtures.StatusValues);
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
-            var result = await controller.Post(ProductFixtures.ProductRequestDtoTest);
+            await controller.Post(ProductFixtures.ProductRequestDtoTest);
             //Assert
             mockProductServices.Verify(
                 service => service.CreateAsync(It.IsAny<ProductsRequestDto>()), Times.Once());
@@ -115,10 +126,13 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var controller = new ProductController(mockProductServices.Object);
+            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+                .Returns(ProductFixtures.StatusValues);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Post(ProductFixtures.ProductBadRequestDtoTest);
@@ -133,10 +147,13 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+             .Returns(ProductFixtures.StatusValues);
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Post(ProductFixtures.ProductRequestDtoTest);
@@ -151,10 +168,11 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
             //Act
             var result = (OkObjectResult)await controller.Put(1, ProductFixtures.ProductRequestDtoTest);
             //Assert
@@ -166,10 +184,11 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Put(1, ProductFixtures.ProductRequestDtoTest);
@@ -183,9 +202,10 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.RemoveAsync(It.IsAny<int>())).ReturnsAsync(true);
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
             //Act
             var result = (OkObjectResult)await controller.Delete(1);
             //Assert
@@ -197,9 +217,10 @@ namespace ProductManagement.UnitTest.System.Controllers
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockProductServices
                 .Setup(service => service.RemoveAsync(It.IsAny<int>()));
-            var controller = new ProductController(mockProductServices.Object);
+            var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
             //Act
             var result = await controller.Delete(1);

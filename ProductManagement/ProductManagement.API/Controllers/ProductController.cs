@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Application.Product.Validations;
+using ProductManagement.Domain.Core;
 
 namespace ProductManagement.API.Controllers
 {
@@ -10,10 +11,12 @@ namespace ProductManagement.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _prodcutService;
+        private readonly IProductStatusCache _productStatusCache;
 
-        public ProductController(IProductService prodcutService)
+        public ProductController(IProductService prodcutService, IProductStatusCache productStatusCache)
         {
             _prodcutService = prodcutService;
+            _productStatusCache = productStatusCache;
         }
 
         // GET api/<ProductController>/5
@@ -32,7 +35,7 @@ namespace ProductManagement.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProductsRequestDto products)
         {
-            var validator = new ProductsRequestDtoValidator();
+            var validator = new ProductsRequestDtoValidator(_productStatusCache);
             var validationResult = validator.Validate(products);
 
             if (!validationResult.IsValid)

@@ -4,8 +4,10 @@ using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
 using ProductManagement.Application.Product.Services;
 using ProductManagement.Application.Product.Validations;
+using ProductManagement.Domain.Core;
 using ProductManagement.Domain.ExternalServices;
 using ProductManagement.Infrastructure;
+using ProductManagement.Infrastructure.Core;
 using ProductManagement.Infrastructure.ExternalServices;
 using Serilog;
 
@@ -45,6 +47,8 @@ void ConfigureServices(IServiceCollection services)
     {
         client.BaseAddress = new Uri("https://6563e225ceac41c0761d2b8c.mockapi.io/id/");
     });
+    services.AddSingleton<IProductStatusCache, MemoryCacheAdapter>();
+    services.AddMemoryCache();
     services.AddTransient<IProductService, ProductService>();
     services.AddTransient<IProductApiClient, ProductApiClient>();
     builder.Services.AddScoped<IValidator<ProductsRequestDto>, ProductsRequestDtoValidator>();

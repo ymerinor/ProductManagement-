@@ -12,7 +12,7 @@ namespace ProductManagement.Application.Product.Dto
         /// <summary>
         /// Obtiene o establece el estado del producto.
         /// </summary>
-        public bool StatusName { get; set; }
+        public int Status { get; set; }
 
         /// <summary>
         /// Obtiene o establece la cantidad en stock del producto.
@@ -39,7 +39,6 @@ namespace ProductManagement.Application.Product.Dto
             return new Products
             {
                 Name = requestDto.Name,
-                StatusName = requestDto.StatusName,
                 Stock = requestDto.Stock,
                 Description = requestDto.Description,
                 Price = requestDto.Price,

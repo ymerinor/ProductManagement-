@@ -18,7 +18,7 @@
         /// <summary>
         /// Obtiene o establece el estado del producto.
         /// </summary>
-        public bool StatusName { get; set; }
+        public string StatusName { get; set; } = null!;
 
         /// <summary>
         /// Obtiene o establece la cantidad en stock del producto.
