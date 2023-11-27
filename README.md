@@ -16,26 +16,6 @@ Asegúrate de tener instalados los siguientes requisitos previos:
     docker-compose up -d
     ```
 3. Después de iniciar la base de datos, ejecuta el archivo `ProductManagement.sql` en tu herramienta de administración de SQL para crear la base de datos y la tabla necesaria.
-
-### Configuración del Proyecto API
-2. Ejecuta el siguiente comando en la cliente de SQL usando,esto para crear la base de dato y tabla configurada para el proyecto:
-    ```bash
-    create database ProductManagement;
-    CREATE TABLE Products
-    (
-      ProductId int primary key identity(1,1),
-      Name varchar(60),
-      StatusName  bit not null,
-      Stock decimal not null,
-      Description varchar(100),
-      Price decimal not null,
-      Discount decimal not null,
-      FinalPrice decimal not null,
-      DateRegistration Datetime,
-      DateUpdate Datetime
-    );
-    ```
-
 ## Uso de la API
 La API estará disponible en la URL [http://localhost:puerto](http://localhost:puerto), donde "puerto" es el puerto que hayas configurado en tu archivo `docker-compose.yml`.
 
