@@ -19,7 +19,11 @@ namespace ProductManagement.API.Controllers
             _productStatusCache = productStatusCache;
         }
 
-        // GET api/<ProductController>/5
+        /// <summary>
+        /// Obtiene un producto por su ID.
+        /// </summary>
+        /// <param name="id">ID del producto.</param>
+        /// <returns>El producto con el ID especificado.</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -31,7 +35,11 @@ namespace ProductManagement.API.Controllers
             return Ok(product);
         }
 
-        // POST api/<ProductController>
+        /// <summary>
+        /// Crea un nuevo producto.
+        /// </summary>
+        /// <param name="product">Datos del nuevo producto.</param>
+        /// <returns>El producto recién creado.</returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProductsRequestDto products)
         {
@@ -47,7 +55,12 @@ namespace ProductManagement.API.Controllers
             return Ok(productCreate);
         }
 
-        // PUT api/<ProductController>/5
+        /// <summary>
+        /// Actualiza un producto existente.
+        /// </summary>
+        /// <param name="id">ID del producto a actualizar.</param>
+        /// <param name="product">Nuevos datos del producto.</param>
+        /// <returns>El producto actualizado.</returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductsRequestDto products)
         {
@@ -55,7 +68,11 @@ namespace ProductManagement.API.Controllers
             return Ok(productUpdate);
         }
 
-        // DELETE api/<ProductController>/5
+        /// <summary>
+        /// Elimina un producto por su ID.
+        /// </summary>
+        /// <param name="id">ID del producto a eliminar.</param>
+        /// <returns>Respuesta de confirmación.</returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

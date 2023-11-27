@@ -28,7 +28,7 @@ namespace ProductManagement.API.Middleware
 
         private void LogResponseTime(HttpContext context, long elapsedMilliseconds)
         {
-            _logger.LogInformation("{Path} - Elapsed Time: {ElapsedMilliseconds} ms", context.Request.Path, elapsedMilliseconds);
+            _logger.LogInformation("{Path} - Tiempo Transacurrdio: {ElapsedMilliseconds} ms", context.Request.Path, elapsedMilliseconds);
         }
     }
 
