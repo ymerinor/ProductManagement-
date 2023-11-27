@@ -1,5 +1,8 @@
 ﻿using Moq;
+using ProductManagement.Application.Common.Exeptions;
 using ProductManagement.Application.Product.Services;
+using ProductManagement.Domain.ExternalServices;
+using ProductManagement.Domain.ExternalServices.Discount;
 using ProductManagement.Domain.Product;
 using ProductManagement.Domain.Repository.Interface;
 using ProductManagement.UnitTest.System.Fixtures;
@@ -13,10 +16,11 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
             mockRepository
                 .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var serviceProduct = new ProductService(mockRepository.Object);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
             //Act
             var result = await serviceProduct.GetByIdAsync(1);
             //Assert
@@ -28,17 +32,10 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
-            var serviceProduct = new ProductService(mockRepository.Object);
-            //Act
-            try
-            {
-                await serviceProduct.GetByIdAsync(2);
-            }
-            catch (Exception ex)
-            {
-                //Assert
-                Assert.Equal("No existe informacion relacionados con el producto", ex.Message);
-            }
+            var mockclientApi = new Mock<IProductApiClient>();
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.GetByIdAsync(2));
 
         }
 
@@ -47,10 +44,16 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
             mockRepository
                 .Setup(repository => repository.CreateAsync(It.IsAny<Products>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var serviceProduct = new ProductService(mockRepository.Object);
+
+            mockclientApi
+             .Setup(clienteApi => clienteApi.GetDataItemAsync(It.IsAny<int>()))
+             .ReturnsAsync(new DiscountData { Id = 1, Discount = 10 });
+
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
             //Act
             var result = await serviceProduct.CreateAsync(ProductFixtures.ProductRequestDtoTest);
             //Assert
@@ -62,13 +65,17 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
             mockRepository
                 .Setup(repository => repository.UpdateAsync(It.IsAny<int>(), It.IsAny<Products>()))
                 .ReturnsAsync(ProductFixtures.ProductUpdateTest);
             mockRepository
                 .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductUpdateTest);
-            var serviceProduct = new ProductService(mockRepository.Object);
+            mockclientApi
+             .Setup(clienteApi => clienteApi.GetDataItemAsync(It.IsAny<int>()))
+             .ReturnsAsync(new DiscountData { Id = 1, Discount = 10 });
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
             //Act
             var result = await serviceProduct.UpdateAsync(1, ProductFixtures.ProductBadRequestDtoTest);
             //Assert
@@ -81,20 +88,12 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
             mockRepository
              .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()));
-            var serviceProduct = new ProductService(mockRepository.Object);
-            //Act
-            try
-            {
-                await serviceProduct.UpdateAsync(2, ProductFixtures.ProductBadRequestDtoTest);
-            }
-            catch (Exception ex)
-            {
-                //Assert
-                Assert.NotNull(ex);
-                Assert.Equal("No existe informacion relacionados con el producto", ex.Message);
-            }
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.UpdateAsync(2, ProductFixtures.ProductBadRequestDtoTest));
         }
 
         [Fact]
@@ -102,13 +101,14 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
             mockRepository
                 .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
             mockRepository
                 .Setup(repository => repository.RemoveAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
-            var serviceProduct = new ProductService(mockRepository.Object);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
             //Act
             var result = await serviceProduct.RemoveAsync(1);
             //Assert
@@ -120,20 +120,13 @@ namespace ProductManagement.UnitTest.System.Application.Services
         {
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
             mockRepository
                 .Setup(repository => repository.RemoveAsync(It.IsAny<int>()))
                 .ReturnsAsync(false);
-            var serviceProduct = new ProductService(mockRepository.Object);
-            try
-            {
-                await serviceProduct.RemoveAsync(1);
-            }
-            catch (Exception ex)
-            {
-                //Assert
-                Assert.NotNull(ex);
-                Assert.Equal("No existe informacion relacionados con el producto", ex.Message);
-            }
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.RemoveAsync(1));
         }
     }
 }

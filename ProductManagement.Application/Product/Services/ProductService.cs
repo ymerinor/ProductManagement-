@@ -1,6 +1,7 @@
 ﻿using ProductManagement.Application.Common.Exeptions;
 using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
+using ProductManagement.Domain.ExternalServices;
 using ProductManagement.Domain.Product;
 using ProductManagement.Domain.Repository.Interface;
 
@@ -14,19 +15,23 @@ namespace ProductManagement.Application.Product.Services
         /// </summary>
         public readonly IProductRepository _productRepository;
 
+        private readonly IProductApiClient _productApiClient;
+
         /// <summary>
         /// inicializador de clase <class>ProductService</class>
         /// </summary>
         /// <param name="productRepository">IProductRepository</param>
-        public ProductService(IProductRepository productRepository)
+        /// <param name="productApiClient">IProductRepository</param>
+        public ProductService(IProductRepository productRepository, IProductApiClient productApiClient)
         {
             _productRepository = productRepository;
+            _productApiClient = productApiClient;
         }
         public async Task<Products> CreateAsync(ProductsRequestDto productsRequestDto)
         {
-            var discount = 5;
+            var discount = await _productApiClient.GetDataItemAsync(1);
             var product = (Products)productsRequestDto;
-            product.Price = productsRequestDto.Price * (discount - 100) / 100;
+            product.Price = productsRequestDto.Price * (100 - discount.Discount) / 100;
             return await _productRepository.CreateAsync(product);
         }
         /// <inheritdoc/>
@@ -39,9 +44,9 @@ namespace ProductManagement.Application.Product.Services
         public async Task<Products> UpdateAsync(int productId, ProductsRequestDto productsRequestDto)
         {
             await ProductExists(productId);
-            var discount = 0M;
+            var discount = await _productApiClient.GetDataItemAsync(productId);
             var productUpdate = (Products)productsRequestDto;
-            productUpdate.Discount = productsRequestDto.Price * (discount - 100) / 100;
+            productUpdate.Discount = productsRequestDto.Price * (100 - discount.Discount) / 100;
             return await _productRepository.UpdateAsync(productId, productUpdate);
         }
         /// <inheritdoc/>

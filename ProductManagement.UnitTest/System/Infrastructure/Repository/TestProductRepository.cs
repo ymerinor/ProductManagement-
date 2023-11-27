@@ -1,4 +1,5 @@
 ﻿using ProductManagement.Infrastructure;
+using ProductManagement.Infrastructure.Exceptions;
 using ProductManagement.Infrastructure.Repository;
 using ProductManagement.UnitTest.System.Fixtures;
 
@@ -70,16 +71,8 @@ namespace ProductManagement.UnitTest.System.Infrastructure.Repository
             using var context = new ProductManagementDbContext(_fixture.CreateOptions<ProductManagementDbContext>());
             // Arrange
             var repository = new ProductRepository(context);
-            // Act
-            try
-            {
-                await repository.UpdateAsync(2, ProductFixtures.ProductCreateTest);
-            }
-            catch (Exception ex)
-            {
-                // Assert
-                Assert.Equal("No existe informacion relacionada con el producto", ex.Message);
-            }
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(async () => await repository.UpdateAsync(2, ProductFixtures.ProductCreateTest));
         }
 
         [Fact]

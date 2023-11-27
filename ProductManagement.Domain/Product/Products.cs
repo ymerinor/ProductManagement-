@@ -44,7 +44,14 @@
         /// Obtiene o establece el precio final del producto después de aplicar el descuento.
         /// </summary>
         public decimal FinalPrice { get; set; } = 0;
+        /// <summary>
+        /// Obtiene o establece la fecha de registro del objeto.
+        /// </summary>
         public DateTime DateRegistration { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Obtiene o establece la fecha de la última actualización del objeto.
+        /// </summary>
         public DateTime DateUpdate { get; set; } = DateTime.Now;
     }
 
