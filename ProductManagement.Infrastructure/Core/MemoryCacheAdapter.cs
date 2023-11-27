@@ -24,7 +24,7 @@ namespace ProductManagement.Infrastructure.Core
         /// Obtiene los estados del producto desde la caché o actualiza la caché si es necesario.
         /// </summary>
         /// <returns>Un diccionario que representa los estados del producto.</returns>
-        public Dictionary<int, string> SetProductStatus()
+        public Dictionary<int, string> GetProductStatus()
         {
             if (!_memoryCache.TryGetValue("ProductStatus", out Dictionary<int, string> cachedStatus))
             {

@@ -12,8 +12,8 @@ namespace ProductManagement.UnitTest.System.Infrastructure.Core
             var cache = new MemoryCacheAdapter(memoryCache);
 
             // Act
-            var result1 = cache.SetProductStatus();
-            var result2 = cache.SetProductStatus();
+            var result1 = cache.GetProductStatus();
+            var result2 = cache.GetProductStatus();
             Assert.Equal(result1, result2);
         }
     }

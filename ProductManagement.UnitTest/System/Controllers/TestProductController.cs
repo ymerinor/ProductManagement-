@@ -88,7 +88,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Arrage
             var mockProductServices = new Mock<IProductService>();
             var mockProductStatusCache = new Mock<IProductStatusCache>();
-            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
              .Returns(ProductFixtures.StatusValues);
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
@@ -106,7 +106,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Arrage
             var mockProductServices = new Mock<IProductService>();
             var mockProductStatusCache = new Mock<IProductStatusCache>();
-            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
             .Returns(ProductFixtures.StatusValues);
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
@@ -130,7 +130,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
                 .Returns(ProductFixtures.StatusValues);
             var controller = new ProductController(mockProductServices.Object, mockProductStatusCache.Object);
 
@@ -148,7 +148,7 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Arrage
             var mockProductServices = new Mock<IProductService>();
             var mockProductStatusCache = new Mock<IProductStatusCache>();
-            mockProductStatusCache.Setup(cache => cache.SetProductStatus())
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
              .Returns(ProductFixtures.StatusValues);
             mockProductServices
                 .Setup(service => service.CreateAsync(It.IsAny<ProductsRequestDto>()))

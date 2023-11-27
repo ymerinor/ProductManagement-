@@ -2,6 +2,6 @@
 {
     public interface IProductStatusCache
     {
-        Dictionary<int, string> SetProductStatus();
+        Dictionary<int, string> GetProductStatus();
     }
 }

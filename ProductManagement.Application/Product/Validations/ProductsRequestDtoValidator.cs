@@ -16,11 +16,10 @@ namespace ProductManagement.Application.Product.Validations
             RuleFor(x => x.Price).NotNull().WithMessage("El campo 'Price' no puede ser nulo.");
             // Agregar regla de validación para StatusName
             RuleFor(x => x.Status)
-                .NotEmpty().WithMessage("El campo 'StatusName' es obligatorio.")
                 .Must(statusName =>
                 {
                     // Obtener estados del producto desde el caché
-                    var productStatus = _productStatusCache.SetProductStatus();
+                    var productStatus = _productStatusCache.GetProductStatus();
 
                     // Verificar si el StatusName se encuentra en los estados del producto
                     return productStatus.ContainsKey(statusName);

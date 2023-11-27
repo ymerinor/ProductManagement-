@@ -1,6 +1,7 @@
 ﻿using Moq;
 using ProductManagement.Application.Common.Exeptions;
 using ProductManagement.Application.Product.Services;
+using ProductManagement.Domain.Core;
 using ProductManagement.Domain.ExternalServices;
 using ProductManagement.Domain.ExternalServices.Discount;
 using ProductManagement.Domain.Product;
@@ -17,10 +18,13 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+            .Returns(ProductFixtures.StatusValues);
             mockRepository
                 .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             //Act
             var result = await serviceProduct.GetByIdAsync(1);
             //Assert
@@ -33,7 +37,10 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+            .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.GetByIdAsync(2));
 
@@ -45,15 +52,17 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockRepository
                 .Setup(repository => repository.CreateAsync(It.IsAny<Products>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
-
             mockclientApi
              .Setup(clienteApi => clienteApi.GetDataItemAsync(It.IsAny<int>()))
              .ReturnsAsync(new DiscountData { Id = 1, Discount = 10 });
 
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+            .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             //Act
             var result = await serviceProduct.CreateAsync(ProductFixtures.ProductRequestDtoTest);
             //Assert
@@ -66,6 +75,7 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockRepository
                 .Setup(repository => repository.UpdateAsync(It.IsAny<int>(), It.IsAny<Products>()))
                 .ReturnsAsync(ProductFixtures.ProductUpdateTest);
@@ -75,7 +85,9 @@ namespace ProductManagement.UnitTest.System.Application.Services
             mockclientApi
              .Setup(clienteApi => clienteApi.GetDataItemAsync(It.IsAny<int>()))
              .ReturnsAsync(new DiscountData { Id = 1, Discount = 10 });
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+           .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             //Act
             var result = await serviceProduct.UpdateAsync(1, ProductFixtures.ProductBadRequestDtoTest);
             //Assert
@@ -89,9 +101,12 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockRepository
              .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()));
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+           .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.UpdateAsync(2, ProductFixtures.ProductBadRequestDtoTest));
         }
@@ -102,13 +117,16 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockRepository
                 .Setup(repository => repository.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProductFixtures.ProductTest);
             mockRepository
                 .Setup(repository => repository.RemoveAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+            .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             //Act
             var result = await serviceProduct.RemoveAsync(1);
             //Assert
@@ -121,10 +139,13 @@ namespace ProductManagement.UnitTest.System.Application.Services
             //Arrage
             var mockRepository = new Mock<IProductRepository>();
             var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
             mockRepository
                 .Setup(repository => repository.RemoveAsync(It.IsAny<int>()))
                 .ReturnsAsync(false);
-            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object);
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+                .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(async () => await serviceProduct.RemoveAsync(1));
         }

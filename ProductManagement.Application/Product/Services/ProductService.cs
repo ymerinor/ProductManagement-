@@ -1,6 +1,7 @@
 ﻿using ProductManagement.Application.Common.Exeptions;
 using ProductManagement.Application.Product.Dto;
 using ProductManagement.Application.Product.Interfaces;
+using ProductManagement.Domain.Core;
 using ProductManagement.Domain.ExternalServices;
 using ProductManagement.Domain.Product;
 using ProductManagement.Domain.Repository.Interface;
@@ -21,19 +22,27 @@ namespace ProductManagement.Application.Product.Services
         private readonly IProductApiClient _productApiClient;
 
         /// <summary>
+        ///  Dependencia de IProductStatusCache
+        /// </summary>
+        private readonly IProductStatusCache _productStatusCache;
+
+        /// <summary>
         /// inicializador de clase <class>ProductService</class>
         /// </summary>
         /// <param name="productRepository">IProductRepository</param>
-        /// <param name="productApiClient">IProductRepository</param>
-        public ProductService(IProductRepository productRepository, IProductApiClient productApiClient)
+        /// <param name="productApiClient">IProductApiClient</param>
+        /// <param name="productStatusCache">IProductStatusCache</param>
+        public ProductService(IProductRepository productRepository, IProductApiClient productApiClient, IProductStatusCache productStatusCache)
         {
             _productRepository = productRepository;
             _productApiClient = productApiClient;
+            _productStatusCache = productStatusCache;
         }
         /// <inheritdoc/>
         public async Task<Products> CreateAsync(ProductsRequestDto productsRequestDto)
         {
             var product = (Products)productsRequestDto;
+            product.StatusName = GetStatusName(productsRequestDto.Status);
             var productRegister = await _productRepository.CreateAsync(product);
             var discount = await _productApiClient.GetDataItemAsync(productRegister.ProductId);
             product.FinalPrice = productsRequestDto.Price * (100 - discount.Discount) / 100;
@@ -53,6 +62,7 @@ namespace ProductManagement.Application.Product.Services
             await ProductExists(productId);
             var discount = await _productApiClient.GetDataItemAsync(productId);
             var productUpdate = (Products)productsRequestDto;
+            productUpdate.StatusName = GetStatusName(productsRequestDto.Status);
             productUpdate.FinalPrice = productsRequestDto.Price * (100 - discount.Discount) / 100;
             productUpdate.Discount = discount.Discount;
             return await _productRepository.UpdateAsync(productId, productUpdate);
@@ -80,6 +90,24 @@ namespace ProductManagement.Application.Product.Services
             {
                 return productInfomation;
             }
+        }
+
+        /// <summary>
+        /// Recupera el valor del estado seleccinado segun su KEY 
+        /// </summary>
+        /// <param name="status">valor de estado a consultar</param>
+        /// <returns>nombre de estado</returns>
+        protected string GetStatusName(int status)
+        {
+            // Obtener la información del caché
+            var cacheInformation = _productStatusCache.GetProductStatus();
+
+            // Asignar el valor de StatusName desde la información del caché
+            if (cacheInformation.TryGetValue(status, out var statusName))
+            {
+                return statusName;
+            }
+            return string.Empty;
         }
     }
 }
