@@ -19,6 +19,10 @@ Asegúrate de tener instalados los siguientes requisitos previos:
 ## Uso de la API
 La API estará disponible en la URL [http://localhost:puerto](http://localhost:puerto), donde "puerto" es el puerto que hayas configurado en tu archivo `docker-compose.yml`.
 
+
+## Ejecutar Pruebas
+El proyecto está diseñado con TDD. Puedes ejecutar las pruebas utilizando tu entorno de desarrollo preferido.
+
 ## Validación de Logs
 
 Para validar los logs generados por la aplicación, puedes acceder a la ruta dentro del contenedor Docker donde se almacenan los logs. La ubicación predeterminada es:
@@ -26,8 +30,3 @@ Para validar los logs generados por la aplicación, puedes acceder a la ruta den
 ```plaintext
 /app/Logs/
 ```
-### Ejecutar Pruebas
-El proyecto está diseñado con TDD. Puedes ejecutar las pruebas utilizando tu entorno de desarrollo preferido.
-
-## Contribuciones
-¡Contribuciones son bienvenidas! Si encuentras errores o tienes mejoras que sugerir, no dudes en abrir un problema o enviar una solicitud de extracción.
