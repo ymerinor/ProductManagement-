@@ -1,6 +1,6 @@
 # ProductManagement
 
-Bienvenido al proyecto ProductManagement. Este proyecto implementa una solución basada en TDD (Desarrollo Guiado por Pruebas) y sigue la arquitectura hexagonal. La aplicación consta de una API, contenerizada en Docker, y utiliza una base de datos también contenerizada.
+Bienvenido al proyecto ProductManagement Este proyecto implementa una solución basada en TDD (Desarrollo Guiado por Pruebas) y sigue la arquitectura hexagonal. La aplicación consta de una API, contenerizada en Docker, y utiliza una base de datos también contenerizada.
 
 ## Configuración del Entorno
 
@@ -19,8 +19,14 @@ Asegúrate de tener instalados los siguientes requisitos previos:
 ## Uso de la API
 La API estará disponible en la URL [http://localhost:puerto](http://localhost:puerto), donde "puerto" es el puerto que hayas configurado en tu archivo `docker-compose.yml`.
 
-### Ejecutar Pruebas
+
+## Ejecutar Pruebas
 El proyecto está diseñado con TDD. Puedes ejecutar las pruebas utilizando tu entorno de desarrollo preferido.
 
-## Contribuciones
-¡Contribuciones son bienvenidas! Si encuentras errores o tienes mejoras que sugerir, no dudes en abrir un problema o enviar una solicitud de extracción.
+## Validación de Logs
+
+Para validar los logs generados por la aplicación, puedes acceder a la ruta dentro del contenedor Docker donde se almacenan los logs. La ubicación predeterminada es:
+
+```plaintext
+/app/Logs/
+```
