@@ -32,5 +32,18 @@ namespace ProductManagement.Domain.Repository.Interface
         /// <param name="productId"></param>
         /// <returns></returns>
         Task<bool> RemoveAsync(int productId);
+
+        /// <summary>
+        /// Guarda los cambios en la base de datos de manera asíncrona.
+        /// </summary>
+        /// <remarks>
+        /// Este método debe ser llamado después de realizar cambios en el contexto de la base de datos
+        /// para persistir esos cambios de manera duradera en la base de datos.
+        /// </remarks>
+        /// <returns>
+        /// Una tarea que representa la operación asíncrona. La tarea se completa cuando se han guardado
+        /// los cambios en la base de datos.
+        /// </returns>
+        Task Commit();
     }
 }

@@ -22,8 +22,7 @@ namespace ProductManagement.Infrastructure.Repository
         /// <inheritdoc/>
         public async Task<Products> CreateAsync(Products products)
         {
-            _context.Products.Add(products);
-            await _context.SaveChangesAsync();
+            await _context.Products.AddAsync(products);
             return products;
         }
 
@@ -39,7 +38,7 @@ namespace ProductManagement.Infrastructure.Repository
             if (productRemove != null)
             {
                 _context.Products.Remove(productRemove);
-                await _context.SaveChangesAsync();
+                await Commit();
                 return true;
             }
             return false;
@@ -59,9 +58,14 @@ namespace ProductManagement.Infrastructure.Repository
                 itemProduct.Price = productCreateTest.Price;
                 itemProduct.Discount = productCreateTest.Discount;
                 _context.Entry(itemProduct).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                await Commit();
             }
             return itemProduct;
+        }
+
+        public async Task Commit()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

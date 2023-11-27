@@ -15,6 +15,9 @@ namespace ProductManagement.Application.Product.Services
         /// </summary>
         public readonly IProductRepository _productRepository;
 
+        /// <summary>
+        /// Dependencia de IProductApiClient
+        /// </summary>
         private readonly IProductApiClient _productApiClient;
 
         /// <summary>
@@ -29,10 +32,13 @@ namespace ProductManagement.Application.Product.Services
         }
         public async Task<Products> CreateAsync(ProductsRequestDto productsRequestDto)
         {
-            var discount = await _productApiClient.GetDataItemAsync(1);
             var product = (Products)productsRequestDto;
-            product.Price = productsRequestDto.Price * (100 - discount.Discount) / 100;
-            return await _productRepository.CreateAsync(product);
+            var productRegister = await _productRepository.CreateAsync(product);
+            var discount = await _productApiClient.GetDataItemAsync(productRegister.ProductId);
+            product.FinalPrice = productsRequestDto.Price * (100 - discount.Discount) / 100;
+            product.Discount = discount.Discount;
+            await _productRepository.Commit();
+            return productRegister;
         }
         /// <inheritdoc/>
         public async Task<ProductsDto> GetByIdAsync(int productId)
@@ -46,7 +52,8 @@ namespace ProductManagement.Application.Product.Services
             await ProductExists(productId);
             var discount = await _productApiClient.GetDataItemAsync(productId);
             var productUpdate = (Products)productsRequestDto;
-            productUpdate.Discount = productsRequestDto.Price * (100 - discount.Discount) / 100;
+            productUpdate.FinalPrice = productsRequestDto.Price * (100 - discount.Discount) / 100;
+            productUpdate.Discount = discount.Discount;
             return await _productRepository.UpdateAsync(productId, productUpdate);
         }
         /// <inheritdoc/>
