@@ -40,7 +40,7 @@ namespace ProductManagement.UnitTest.System.Infrastructure.ExternalServices
 
 
         [Fact]
-        public async Task GetDataItemAsync_ShouldHandleErrorResponse()
+        public async Task GetDataItemAsync_NotFoundResponse()
         {
             // Arrange
             var httpClientFactoryMock = new Mock<IHttpClientFactory>();
@@ -50,8 +50,7 @@ namespace ProductManagement.UnitTest.System.Infrastructure.ExternalServices
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Content = new StringContent("Internal Server Error")
+                    StatusCode = HttpStatusCode.NotFound,
                 });
 
             var httpClient = new HttpClient(handlerMock.Object);
@@ -59,8 +58,11 @@ namespace ProductManagement.UnitTest.System.Infrastructure.ExternalServices
             httpClient.BaseAddress = new Uri("https://6563e225ceac41c0761d2b8c.mockapi.io/id/");
             var apiDataApiClient = new ProductApiClient(httpClientFactoryMock.Object);
 
-            // Act & Assert
-            await Assert.ThrowsAsync<HttpRequestException>(async () => await apiDataApiClient.GetDataItemAsync(1));
+            // Act
+            var result = await apiDataApiClient.GetDataItemAsync(1);
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(0, result.Id);
         }
 
     }

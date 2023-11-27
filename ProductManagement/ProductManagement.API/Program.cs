@@ -21,7 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.UseResponseTimeLogging();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 //Add support to logging request with SERILOG
 app.UseSerilogRequestLogging();
+app.UseResponseTimeLogging();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -40,7 +41,7 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
-    services.AddHttpClient<IProductApiClient, ProductApiClient>(client =>
+    services.AddHttpClient<IProductApiClient, ProductApiClient>("ApiDataApiClient", client =>
     {
         client.BaseAddress = new Uri("https://6563e225ceac41c0761d2b8c.mockapi.io/id/");
     });

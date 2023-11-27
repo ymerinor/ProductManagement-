@@ -23,6 +23,7 @@ namespace ProductManagement.Infrastructure.Repository
         public async Task<Products> CreateAsync(Products products)
         {
             await _context.Products.AddAsync(products);
+            await Commit();
             return products;
         }
 
