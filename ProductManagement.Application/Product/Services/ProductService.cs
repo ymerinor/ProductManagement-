@@ -30,6 +30,7 @@ namespace ProductManagement.Application.Product.Services
             _productRepository = productRepository;
             _productApiClient = productApiClient;
         }
+        /// <inheritdoc/>
         public async Task<Products> CreateAsync(ProductsRequestDto productsRequestDto)
         {
             var product = (Products)productsRequestDto;
@@ -62,7 +63,12 @@ namespace ProductManagement.Application.Product.Services
             await ProductExists(productId);
             return await _productRepository.RemoveAsync(productId);
         }
-
+        /// <summary>
+        /// Realiza la validacion si un producto consulta existe registrado o no
+        /// </summary>
+        /// <param name="productId">id de producto a consultar</param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException">se lanza exepcion en caso de no existir registro creado</exception>
         protected async Task<Products> ProductExists(int productId)
         {
             var productInfomation = await _productRepository.GetByIdAsync(productId);
