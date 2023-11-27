@@ -1,4 +1,5 @@
 ﻿using ProductManagement.Application.Common.Exeptions;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
 namespace ProductManagement.API.Middleware
@@ -7,6 +8,7 @@ namespace ProductManagement.API.Middleware
     /// Middleware para el manejo centralizado de excepciones no controladas en la aplicación.
     /// Captura excepciones específicas, registra información y devuelve respuestas de error con detalles de la excepción.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -17,6 +19,7 @@ namespace ProductManagement.API.Middleware
         /// </summary>
         /// <param name="next">El siguiente delegado de solicitud en la canalización.</param>
         /// <param name="logger">El registrador utilizado para registrar información sobre excepciones.</param>
+        [ExcludeFromCodeCoverage]
         public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
@@ -28,6 +31,8 @@ namespace ProductManagement.API.Middleware
         /// </summary>
         /// <param name="context">El contexto de la solicitud.</param>
         /// <returns>Una tarea que representa la operación asincrónica.</returns>
+
+        [ExcludeFromCodeCoverage]
         public async Task Invoke(HttpContext context)
         {
             try
@@ -50,6 +55,8 @@ namespace ProductManagement.API.Middleware
         /// <param name="context">El contexto de la solicitud.</param>
         /// <param name="ex">La excepción capturada.</param>
         /// <returns>Una tarea que representa la operación asincrónica.</returns>
+
+        [ExcludeFromCodeCoverage]
         private async Task HandleNotFoundExceptionAsync(HttpContext context, NoContentException ex)
         {
             _logger.LogInformation($"Recurso no encontrado: {ex.Message}");
@@ -75,6 +82,7 @@ namespace ProductManagement.API.Middleware
         /// <param name="context">El contexto de la solicitud.</param>
         /// <param name="ex">La excepción capturada.</param>
         /// <returns>Una tarea que representa la operación asincrónica.</returns>
+        [ExcludeFromCodeCoverage]
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             _logger.LogError($"Se ha producido una excepción: {ex}");
@@ -99,6 +107,7 @@ namespace ProductManagement.API.Middleware
         /// </summary>
         /// <param name="ex">La excepción para la cual se debe obtener el código de estado.</param>
         /// <returns>El código de estado HTTP.</returns>
+        [ExcludeFromCodeCoverage]
         private int GetStatusCodeForException(Exception ex)
         {
             return 500; // Por defecto, devuelve un código de estado 500 para otras excepciones.
@@ -108,6 +117,8 @@ namespace ProductManagement.API.Middleware
     /// <summary>
     /// Clase que representa la estructura de una respuesta de error que incluye detalles de la excepción.
     /// </summary>
+
+    [ExcludeFromCodeCoverage]
     public class ErrorResponse
     {
         /// <summary>
@@ -139,6 +150,7 @@ namespace ProductManagement.API.Middleware
     /// <summary>
     /// Clase de extensión que proporciona un método para agregar el middleware de excepciones a la canalización de solicitud.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class ExceptionMiddlewareExtensions
     {
         /// <summary>

@@ -14,6 +14,7 @@ using ProductManagement.Infrastructure.Core;
 using ProductManagement.Infrastructure.ExternalServices;
 using ProductManagement.Infrastructure.Repository;
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ ConfigureServices(builder.Services);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -64,7 +66,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
+[ExcludeFromCodeCoverage]
 void ConfigureServices(IServiceCollection services)
 {
     services.AddHttpClient<IProductApiClient, ProductApiClient>("ApiDataApiClient", client =>

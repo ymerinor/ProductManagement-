@@ -30,12 +30,15 @@ namespace ProductManagement.API.Controllers
         /// <param name="id">ID del producto.</param>
         /// <returns>El producto con el ID especificado.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
             var product = await _prodcutService.GetByIdAsync(id);
             if (product is null)
             {
-                return NotFound();
+                return NoContent();
             }
             return Ok(product);
         }
@@ -46,6 +49,9 @@ namespace ProductManagement.API.Controllers
         /// <param name="product">Datos del nuevo producto.</param>
         /// <returns>El producto recién creado.</returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Post([FromBody] ProductsRequestDto product)
         {
             var validator = new ProductsRequestDtoValidator(_productStatusCache);
@@ -67,6 +73,10 @@ namespace ProductManagement.API.Controllers
         /// <param name="product">Nuevos datos del producto.</param>
         /// <returns>El producto actualizado.</returns>
         [HttpPut("{id}")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Put(int id, [FromBody] ProductsRequestDto product)
         {
             var validator = new ProductsRequestDtoValidator(_productStatusCache);
@@ -86,6 +96,10 @@ namespace ProductManagement.API.Controllers
         /// <param name="id">ID del producto a eliminar.</param>
         /// <returns>Respuesta de confirmación.</returns>
         [HttpDelete("{id}")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete(int id)
         {
             var productRemove = await _prodcutService.RemoveAsync(id);

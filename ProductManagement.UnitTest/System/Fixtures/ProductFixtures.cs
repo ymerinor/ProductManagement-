@@ -40,6 +40,15 @@ namespace ProductManagement.UnitTest.System.Fixtures
             Status = 1,
             Stock = 1
         };
+
+        public static ProductsRequestDto ProductNoContentDtoTest => new()
+        {
+            Description = "Prodcut",
+            Name = "Name",
+            Price = 1,
+            Status = 3,
+            Stock = 1
+        };
         public static ProductsRequestDto ProductBadRequestDtoTest => new()
         {
             Description = "Prodcut",

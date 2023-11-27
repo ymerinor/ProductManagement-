@@ -67,7 +67,7 @@ namespace ProductManagement.UnitTest.System.Controllers
 
 
         [Fact]
-        public async Task Get_NoUserFound_Return404()
+        public async Task Get_ContentProduct_Return204()
         {
             //Arrage
             var mockProductServices = new Mock<IProductService>();
@@ -77,9 +77,9 @@ namespace ProductManagement.UnitTest.System.Controllers
             //Act
             var result = await controller.Get(2);
             //Assert
-            result.Should().BeOfType<NotFoundResult>();
-            var objectResult = (NotFoundResult)result;
-            objectResult.StatusCode.Should().Be(404);
+            result.Should().BeOfType<NoContentResult>();
+            var objectResult = (NoContentResult)result;
+            objectResult.StatusCode.Should().Be(204);
         }
 
         [Fact]

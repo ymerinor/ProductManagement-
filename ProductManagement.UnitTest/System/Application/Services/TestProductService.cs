@@ -70,6 +70,30 @@ namespace ProductManagement.UnitTest.System.Application.Services
         }
 
         [Fact]
+        public async Task CreateProduct_NoContentStatus_Sucess()
+        {
+            //Arrage
+            var mockRepository = new Mock<IProductRepository>();
+            var mockclientApi = new Mock<IProductApiClient>();
+            var mockProductStatusCache = new Mock<IProductStatusCache>();
+            mockRepository
+                .Setup(repository => repository.CreateAsync(It.IsAny<Products>()))
+                .ReturnsAsync(ProductFixtures.ProductTest);
+            mockclientApi
+             .Setup(clienteApi => clienteApi.GetDataItemAsync(It.IsAny<int>()))
+             .ReturnsAsync(new DiscountData { Id = 1, Discount = 10 });
+
+            mockProductStatusCache.Setup(cache => cache.GetProductStatus())
+            .Returns(ProductFixtures.StatusValues);
+            var serviceProduct = new ProductService(mockRepository.Object, mockclientApi.Object, mockProductStatusCache.Object);
+            //Act
+
+            var result = await serviceProduct.CreateAsync(ProductFixtures.ProductNoContentDtoTest);
+            //Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task UpdateProduct_Sucess()
         {
             //Arrage

@@ -1,18 +1,22 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ProductManagement.API.Middleware
 {
+    [ExcludeFromCodeCoverage]
     public class TimeLoggingMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<TimeLoggingMiddleware> _logger;
 
+        [ExcludeFromCodeCoverage]
         public TimeLoggingMiddleware(RequestDelegate next, ILogger<TimeLoggingMiddleware> logger)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        [ExcludeFromCodeCoverage]
         public async Task Invoke(HttpContext context)
         {
             var stopwatch = new Stopwatch();
@@ -32,6 +36,7 @@ namespace ProductManagement.API.Middleware
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public static class ResponseTimeLoggingMiddlewareExtensions
     {
         public static IApplicationBuilder UseResponseTimeLogging(this IApplicationBuilder builder)
